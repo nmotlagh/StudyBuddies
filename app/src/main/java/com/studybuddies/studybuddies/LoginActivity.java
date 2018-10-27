@@ -357,7 +357,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }catch(IOException e){
             System.perr(USER_PASS);
         }
-        return true;
+
 
     }
 }
