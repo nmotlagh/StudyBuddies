@@ -28,6 +28,8 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,6 +45,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      */
     private static final int REQUEST_READ_CONTACTS = 0;
 
+    private static final String USER_PASS = "user-pass.txt";
     /**
      * A dummy authentication store containing known user names and passwords.
      * TODO: remove after connecting to a real authentication system.
@@ -159,7 +162,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         View focusView = null;
 
         // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+        if (!isPasswordValid(password)) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = mPasswordView;
             cancel = true;
@@ -170,7 +173,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mEmailView.setError(getString(R.string.error_field_required));
             focusView = mEmailView;
             cancel = true;
-        } else if (!isEmailValid(email)) {
+        } else if (!isEmailValid(email) && checkAgainstFile(email)) {
             mEmailView.setError(getString(R.string.error_invalid_email));
             focusView = mEmailView;
             cancel = true;
@@ -188,9 +191,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mAuthTask.execute((Void) null);
         }
     }
+
+
     private boolean isEmailValid(String email) {
         //TODO: Replace this with your own logic
-        return email.contains("@");
+        return email.contains("@osu.edu");
     }
 
     private boolean isPasswordValid(String password) {
@@ -343,6 +348,17 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             mAuthTask = null;
             showProgress(false);
         }
+    }
+    /*IN PROGRESS*/
+    private boolean checkEmailData(String email){
+        PrintWriter checkFile;
+        try {
+            checkFile = new PrintWriter(new BufferedWriter(new FileWriter(USER_PASS)));
+        }catch(IOException e){
+            System.perr(USER_PASS);
+        }
+        return true;
+
     }
 }
 
